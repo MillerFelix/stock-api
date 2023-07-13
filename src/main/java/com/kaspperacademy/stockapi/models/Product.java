@@ -16,6 +16,10 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne
+    @JoinColumn(name = "type_id")
+    private Type type;
+
     @Column(nullable = false, length = 30)
     private String name;
 
@@ -27,10 +31,5 @@ public class Product {
 
     @Column(length = 300)
     private String description;
-
-    @OneToOne
-    @JoinColumn(name = "type_id", nullable = false, updatable = false)
-    private Type type;
-
 
 }

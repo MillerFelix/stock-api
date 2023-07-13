@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Entity
 @Table(name = "types")
 @Data
@@ -18,4 +20,7 @@ public class Type {
 
     @Column(nullable = false, length = 30)
     private String name;
+
+    @OneToMany(mappedBy = "type")
+    private List<Product> products;
 }
