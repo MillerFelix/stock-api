@@ -26,6 +26,11 @@ public class ProductService {
         return product.orElseThrow();
     }
 
+    public List<Product> getProductsByTypeId(Long typeId) {
+        return productRepository.findByTypeId(typeId);
+    }
+
+
     @Transactional
     public Product save(ProductDto dto) {
         Product product = convertToProduct(dto);
