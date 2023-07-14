@@ -20,6 +20,7 @@ public class ProductDto {
         this.description = description;
     }
 
+
     public String getName() {
         return name;
     }

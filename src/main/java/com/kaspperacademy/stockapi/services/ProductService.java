@@ -3,9 +3,12 @@ package com.kaspperacademy.stockapi.services;
 import com.kaspperacademy.stockapi.dto.ProductDto;
 import com.kaspperacademy.stockapi.models.Product;
 import com.kaspperacademy.stockapi.repositories.ProductRepository;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 public class ProductService {
@@ -13,10 +16,24 @@ public class ProductService {
     @Autowired
     private ProductRepository productRepository;
 
+    public List<Product> listProducts() {
+        return productRepository.findAll();
+    }
+
     @Transactional
     public Product save(ProductDto dto) {
         Product product = convertToProduct(dto);
         return productRepository.save(product);
+    }
+
+    public void update(Long id, ProductDto dto) {
+        Product product = productRepository.findById(id).orElseThrow(() -> new RuntimeException("Product not found"));
+        BeanUtils.copyProperties(dto, product);
+        productRepository.save(product);
+    }
+
+    public void delete(Long id) {
+        productRepository.deleteById(id);
     }
 
     private Product convertToProduct(ProductDto dto) {
@@ -26,7 +43,6 @@ public class ProductService {
         product.setPrice(dto.getPrice());
         product.setAmount(dto.getAmount());
         product.setDescription(dto.getDescription());
-
         return product;
     }
 
