@@ -21,6 +21,8 @@ public class Type {
     @Column(nullable = false, length = 30)
     private String name;
 
-    @OneToMany(mappedBy = "type")
-    private List<Product> products;
+//    Tava criando uma req infinita, para eu trazer essa lista é melhor fazer uma query e buscar diretamente a lista.
+
+//    @OneToMany(mappedBy = "type")
+//    private List<Product> products;
 }

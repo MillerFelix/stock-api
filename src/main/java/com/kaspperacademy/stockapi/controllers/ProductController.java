@@ -24,6 +24,12 @@ public class ProductController {
         return productService.listProducts();
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Product> getProduct(@PathVariable Long id) {
+        Product product = productService.getProduct(id);
+        return ResponseEntity.ok().body(product);
+    }
+
     @PostMapping
     public ResponseEntity<ProductDto> save(@RequestBody ProductDto dto) {
         Product product = productService.save(dto);
