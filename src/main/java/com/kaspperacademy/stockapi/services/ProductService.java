@@ -50,7 +50,7 @@ public class ProductService {
 
     public void update(Long id, ProductDto dto) {
         validateProductDto(dto);
-        Product product = productRepository.findById(id).orElseThrow(() -> new RuntimeException("Product not found."));
+        Product product = productRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Product not found."));
         BeanUtils.copyProperties(dto, product);
         productRepository.save(product);
     }
