@@ -2,17 +2,19 @@ package com.kaspperacademy.stockapi.dto;
 
 import com.kaspperacademy.stockapi.models.Type;
 
+import java.math.BigDecimal;
+
 public class ProductDto {
 
     private String name;
     private Type type;
-    private Double price;
-    private Integer amount;
+    private BigDecimal price;
+    private int amount;
     private String description;
 
     public ProductDto() {}
 
-    public ProductDto(String name, Type type, Double price, Integer amount, String description) {
+    public ProductDto(String name, Type type, BigDecimal price, int amount, String description) {
         this.name = name;
         this.type = type;
         this.price = price;
@@ -29,12 +31,11 @@ public class ProductDto {
         return type;
     }
 
-
-    public Double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public Integer getAmount() {
+    public int getAmount() {
         return amount;
     }
 
