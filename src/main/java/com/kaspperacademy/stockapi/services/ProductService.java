@@ -2,6 +2,7 @@ package com.kaspperacademy.stockapi.services;
 
 import com.kaspperacademy.stockapi.dto.ProductDto;
 import com.kaspperacademy.stockapi.models.Product;
+import com.kaspperacademy.stockapi.models.Type;
 import com.kaspperacademy.stockapi.repositories.ProductRepository;
 import com.kaspperacademy.stockapi.repositories.TypeRepository;
 import jakarta.transaction.Transactional;
@@ -10,7 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -63,6 +66,21 @@ public class ProductService {
             throw new IllegalArgumentException("Product not found for ID: " + id);
         }
         productRepository.deleteById(id);
+    }
+
+    public Map<String, Integer> getAmountByType() {
+        List<Object[]> data = productRepository.findAmountByTypeName();
+        if (data.isEmpty()) {
+            throw new IllegalArgumentException("No data found.");
+        }
+        Map<String, Integer> amountByType = new HashMap<>();
+
+        for (Object[] result : data) {
+            String type = (String) result[0];
+            Integer amount = ((Number) result[1]).intValue();
+            amountByType.put(type, amount);
+        }
+        return amountByType;
     }
 
     private Product convertToProduct(ProductDto dto) {

@@ -9,7 +9,7 @@ public class ProductDto {
     private String name;
     private Type type;
     private BigDecimal price;
-    private int amount;
+    private Integer amount;
     private String description;
 
     public ProductDto() {}
@@ -35,7 +35,7 @@ public class ProductDto {
         return price;
     }
 
-    public int getAmount() {
+    public Integer getAmount() {
         return amount;
     }
 

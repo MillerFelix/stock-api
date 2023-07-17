@@ -3,6 +3,7 @@ package com.kaspperacademy.stockapi.controllers;
 
 import com.kaspperacademy.stockapi.dto.ProductDto;
 import com.kaspperacademy.stockapi.models.Product;
+import com.kaspperacademy.stockapi.models.Type;
 import com.kaspperacademy.stockapi.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,6 +12,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/products")
@@ -78,6 +80,18 @@ public class ProductController {
             return ResponseEntity.ok("Product removed successfully!");
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body("Request error: " + e.getMessage());
+        }
+    }
+
+    @GetMapping("/graph")
+    public ResponseEntity<?> getGraphData() {
+        try {
+            Map<String, Integer> data = productService.getAmountByType();
+            return ResponseEntity.ok(data);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 }
