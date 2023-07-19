@@ -13,6 +13,9 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     List<Product> findByTypeId(@Param("typeId") Long typeId);
 
     @Query("SELECT p.type.name, SUM(p.amount) FROM Product p GROUP BY p.type.id")
-    List<Object[]> findAmountByTypeName();
+    List<Object[]> findAmountByType();
+
+    @Query("SELECT p.type.name, SUM(p.price * p.amount) FROM Product p GROUP BY p.type.id")
+    List<Object[]> findValuesByType();
 
 }

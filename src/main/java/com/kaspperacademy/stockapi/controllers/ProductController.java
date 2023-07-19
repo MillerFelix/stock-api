@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -83,10 +84,22 @@ public class ProductController {
         }
     }
 
-    @GetMapping("/graph")
-    public ResponseEntity<?> getGraphData() {
+    @GetMapping("/amount")
+    public ResponseEntity<?> getAmountByType() {
         try {
             Map<String, Integer> data = productService.getAmountByType();
+            return ResponseEntity.ok(data);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @GetMapping("/value")
+    public ResponseEntity<Map<String, BigDecimal>> getValuesByType() {
+        try {
+            Map<String, BigDecimal> data = productService.getValuesByType();
             return ResponseEntity.ok(data);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.notFound().build();

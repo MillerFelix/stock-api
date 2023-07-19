@@ -69,7 +69,7 @@ public class ProductService {
     }
 
     public Map<String, Integer> getAmountByType() {
-        List<Object[]> data = productRepository.findAmountByTypeName();
+        List<Object[]> data = productRepository.findAmountByType();
         if (data.isEmpty()) {
             throw new IllegalArgumentException("No data found.");
         }
@@ -81,6 +81,21 @@ public class ProductService {
             amountByType.put(type, amount);
         }
         return amountByType;
+    }
+
+    public Map<String, BigDecimal> getValuesByType() {
+        List<Object[]> data = productRepository.findValuesByType();
+        if (data.isEmpty()) {
+            throw new IllegalArgumentException("No data found.");
+        }
+        Map<String, BigDecimal> valueByTypeName = new HashMap<>();
+
+        for (Object[] result : data) {
+            String type = (String) result[0];
+            BigDecimal value = (BigDecimal) result[1];
+            valueByTypeName.put(type, value);
+        }
+        return valueByTypeName;
     }
 
     private Product convertToProduct(ProductDto dto) {
