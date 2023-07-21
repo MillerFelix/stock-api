@@ -3,9 +3,10 @@ package com.kaspperacademy.stockapi.controllers;
 
 import com.kaspperacademy.stockapi.dto.ProductDto;
 import com.kaspperacademy.stockapi.models.Product;
-import com.kaspperacademy.stockapi.models.Type;
 import com.kaspperacademy.stockapi.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -28,6 +29,12 @@ public class ProductController {
         return productService.listProducts();
     }
 
+    //  Se for chamar paginado precisa passar na url: /products?page=0&size=10
+    @GetMapping("/products")
+    public Page<Product> paginatedListProduct(Pageable pageable) {
+        return productService.paginatedListProduct(pageable);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<?> getProduct(@PathVariable Long id) {
         try {
@@ -42,9 +49,6 @@ public class ProductController {
     @GetMapping("/type/{id}")
     public ResponseEntity<?> getProductsByTypeId(@PathVariable Long id) {
         List<Product> products = productService.getProductsByTypeId(id);
-        if (products.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
         return ResponseEntity.ok().body(products);
     }
 

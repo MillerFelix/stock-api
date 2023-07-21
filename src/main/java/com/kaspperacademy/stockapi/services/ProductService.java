@@ -2,12 +2,13 @@ package com.kaspperacademy.stockapi.services;
 
 import com.kaspperacademy.stockapi.dto.ProductDto;
 import com.kaspperacademy.stockapi.models.Product;
-import com.kaspperacademy.stockapi.models.Type;
 import com.kaspperacademy.stockapi.repositories.ProductRepository;
 import com.kaspperacademy.stockapi.repositories.TypeRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -26,6 +27,10 @@ public class ProductService {
 
     public List<Product> listProducts() {
         return productRepository.findAll();
+    }
+
+    public Page<Product> paginatedListProduct(Pageable pageable) {
+        return productRepository.findAll(pageable);
     }
 
     public Product getProduct(Long id) {
