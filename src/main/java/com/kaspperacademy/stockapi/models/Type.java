@@ -19,4 +19,7 @@ public class Type {
     @Column(nullable = false, length = 30)
     private String name;
 
+    @Column(length = 300)
+    private String description;
+
 }

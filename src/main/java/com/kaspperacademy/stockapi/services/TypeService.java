@@ -58,6 +58,7 @@ public class TypeService {
     private Type convertToType(TypeDto dto) {
         Type type = new Type();
         type.setName(dto.getName());
+        type.setDescription(dto.getDescription());
         return type;
     }
 

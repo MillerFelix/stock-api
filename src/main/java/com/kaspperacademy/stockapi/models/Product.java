@@ -26,7 +26,10 @@ public class Product {
     private String name;
 
     @Column(nullable = false)
-    private BigDecimal price;
+    private BigDecimal value;
+
+    @Column(length = 100)
+    private String supplier;
 
     @Column(nullable = false)
     private Integer amount;

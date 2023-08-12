@@ -103,11 +103,31 @@ public class ProductService {
         return valueByTypeName;
     }
 
+    public Map<String, BigDecimal> getValuesByProducts() {
+        List<Object[]> data = productRepository.findValuesByProducts();
+        Map<String, BigDecimal> valuesByProduct = new HashMap<>();
+        if (data.isEmpty()) {
+            throw new IllegalArgumentException("No data found.");
+        }
+
+        for (Object[] result : data) {
+            String productName = (String) result[0];
+            BigDecimal value = (BigDecimal) result[1];
+            valuesByProduct.put(productName, value);
+        }
+        return valuesByProduct;
+    }
+
+    public BigDecimal getValueByProduct(Long id) {
+        return productRepository.findValueByProduct(id);
+    }
+
     private Product convertToProduct(ProductDto dto) {
         Product product = new Product();
         product.setName(dto.getName());
         product.setType(dto.getType());
-        product.setPrice(dto.getPrice());
+        product.setValue(dto.getValue());
+        product.setSupplier(dto.getSupplier());
         product.setAmount(dto.getAmount());
         product.setDescription(dto.getDescription());
         return product;
@@ -123,7 +143,7 @@ public class ProductService {
         if (dto.getType() == null) {
             throw new IllegalArgumentException("The 'type' field in the DTO cannot be null.");
         }
-        if (dto.getPrice() == null || dto.getPrice().compareTo(BigDecimal.ZERO) <= 0) {
+        if (dto.getValue() == null || dto.getValue().compareTo(BigDecimal.ZERO) <= 0) {
             throw new IllegalArgumentException("The 'price' field in the DTO must be a valid value and greater than zero.");
         }
         if (dto.getAmount() <= 0) {

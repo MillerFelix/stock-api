@@ -88,7 +88,7 @@ public class ProductController {
         }
     }
 
-    @GetMapping("/amount")
+    @GetMapping("/types-amount")
     public ResponseEntity<?> getAmountByType() {
         try {
             Map<String, Integer> data = productService.getAmountByType();
@@ -100,11 +100,35 @@ public class ProductController {
         }
     }
 
-    @GetMapping("/value")
+    @GetMapping("/types-values")
     public ResponseEntity<Map<String, BigDecimal>> getValuesByType() {
         try {
             Map<String, BigDecimal> data = productService.getValuesByType();
             return ResponseEntity.ok(data);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @GetMapping("/products-values")
+    public ResponseEntity<Map<String, BigDecimal>> getProductsValues() {
+        try {
+            Map<String, BigDecimal> data = productService.getValuesByProducts();
+            return ResponseEntity.ok(data);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @GetMapping("/product-value/{id}")
+    public ResponseEntity<BigDecimal> getProductTotalValue(@PathVariable Long id) {
+        try {
+            BigDecimal value = productService.getValueByProduct(id);
+            return ResponseEntity.ok(value);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.notFound().build();
         } catch (Exception e) {
