@@ -1,5 +1,6 @@
 package com.kaspperacademy.stockapi.dto;
 
+import com.kaspperacademy.stockapi.models.Supplier;
 import com.kaspperacademy.stockapi.models.Type;
 
 import java.math.BigDecimal;
@@ -9,13 +10,13 @@ public class ProductDto {
     private String name;
     private Type type;
     private BigDecimal value;
-    private String supplier;
+    private Supplier supplier;
     private Integer amount;
     private String description;
 
     public ProductDto() {}
 
-    public ProductDto(String name, Type type, BigDecimal value, String supplier, int amount, String description) {
+    public ProductDto(String name, Type type, BigDecimal value, Supplier supplier, int amount, String description) {
         this.name = name;
         this.type = type;
         this.value = value;
@@ -37,7 +38,7 @@ public class ProductDto {
         return value;
     }
 
-    public String getSupplier() {
+    public Supplier getSupplier() {
         return supplier;
     }
 

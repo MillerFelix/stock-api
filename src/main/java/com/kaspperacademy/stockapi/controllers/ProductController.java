@@ -125,7 +125,7 @@ public class ProductController {
     }
 
     @GetMapping("/product-value/{id}")
-    public ResponseEntity<BigDecimal> getProductTotalValue(@PathVariable Long id) {
+    public ResponseEntity<BigDecimal> getProductValue(@PathVariable Long id) {
         try {
             BigDecimal value = productService.getValueByProduct(id);
             return ResponseEntity.ok(value);

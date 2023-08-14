@@ -19,8 +19,12 @@ public class Product {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "type_id")
+    @JoinColumn(nullable = false ,name = "type_id")
     private Type type;
+
+    @ManyToOne
+    @JoinColumn(nullable = false, name = "supplier_id")
+    private Supplier supplier;
 
     @Column(nullable = false, length = 30)
     private String name;
@@ -28,8 +32,6 @@ public class Product {
     @Column(nullable = false)
     private BigDecimal value;
 
-    @Column(length = 100)
-    private String supplier;
 
     @Column(nullable = false)
     private Integer amount;

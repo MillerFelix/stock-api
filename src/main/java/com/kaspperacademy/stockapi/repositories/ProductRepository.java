@@ -19,7 +19,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query("SELECT p.type.name, SUM(p.value * p.amount) FROM Product p GROUP BY p.type.id")
     List<Object[]> findValuesByType();
 
-    @Query("SELECT p.name, SUM(p.value * p.amount) FROM Product p GROUP BY p.id")
+    @Query("SELECT p.name, SUM(p.value * p.amount) FROM Product p GROUP BY p.name")
     List<Object[]> findValuesByProducts();
 
     @Query("SELECT SUM(p.value * p.amount) FROM Product p WHERE p.id = :id")
