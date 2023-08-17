@@ -1,6 +1,8 @@
 package com.kaspperacademy.stockapi.services;
 
+import com.kaspperacademy.stockapi.dto.GraphTypeValuesDto;
 import com.kaspperacademy.stockapi.dto.ProductDto;
+import com.kaspperacademy.stockapi.dto.GraphTypeAmountDto;
 import com.kaspperacademy.stockapi.models.Product;
 import com.kaspperacademy.stockapi.repositories.ProductRepository;
 import com.kaspperacademy.stockapi.repositories.TypeRepository;
@@ -12,10 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class ProductService {
@@ -73,34 +72,37 @@ public class ProductService {
         productRepository.deleteById(id);
     }
 
-    public Map<String, Integer> getAmountByType() {
+    public List<GraphTypeAmountDto> getAmountByType() {
         List<Object[]> data = productRepository.findAmountByType();
         if (data.isEmpty()) {
             throw new IllegalArgumentException("No data found.");
         }
-        Map<String, Integer> amountByType = new HashMap<>();
-
+        List<GraphTypeAmountDto> amountByTypeList = new ArrayList<>();
         for (Object[] result : data) {
-            String type = (String) result[0];
+            String typeName = (String) result[0];
             Integer amount = ((Number) result[1]).intValue();
-            amountByType.put(type, amount);
+            GraphTypeAmountDto dto = new GraphTypeAmountDto(typeName, amount);
+            amountByTypeList.add(dto);
         }
-        return amountByType;
+        return amountByTypeList;
     }
 
-    public Map<String, BigDecimal> getValuesByType() {
+    public List<GraphTypeValuesDto> getValuesByType() {
         List<Object[]> data = productRepository.findValuesByType();
         if (data.isEmpty()) {
             throw new IllegalArgumentException("No data found.");
         }
-        Map<String, BigDecimal> valueByTypeName = new HashMap<>();
+
+        List<GraphTypeValuesDto> valueByTypeList = new ArrayList<>();
 
         for (Object[] result : data) {
-            String type = (String) result[0];
+            String typeName = (String) result[0];
             BigDecimal value = (BigDecimal) result[1];
-            valueByTypeName.put(type, value);
+            GraphTypeValuesDto dto = new GraphTypeValuesDto(typeName, value);
+            valueByTypeList.add(dto);
         }
-        return valueByTypeName;
+
+        return valueByTypeList;
     }
 
     public Map<String, BigDecimal> getValuesByProducts() {

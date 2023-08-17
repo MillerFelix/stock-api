@@ -1,7 +1,9 @@
 package com.kaspperacademy.stockapi.controllers;
 
 
+import com.kaspperacademy.stockapi.dto.GraphTypeValuesDto;
 import com.kaspperacademy.stockapi.dto.ProductDto;
+import com.kaspperacademy.stockapi.dto.GraphTypeAmountDto;
 import com.kaspperacademy.stockapi.models.Product;
 import com.kaspperacademy.stockapi.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -89,9 +91,9 @@ public class ProductController {
     }
 
     @GetMapping("/types-amount")
-    public ResponseEntity<?> getAmountByType() {
+    public ResponseEntity<List<GraphTypeAmountDto>> getAmountByType() {
         try {
-            Map<String, Integer> data = productService.getAmountByType();
+            List<GraphTypeAmountDto> data = productService.getAmountByType();
             return ResponseEntity.ok(data);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.notFound().build();
@@ -101,9 +103,9 @@ public class ProductController {
     }
 
     @GetMapping("/types-values")
-    public ResponseEntity<Map<String, BigDecimal>> getValuesByType() {
+    public ResponseEntity<List<GraphTypeValuesDto>> getValuesByType() {
         try {
-            Map<String, BigDecimal> data = productService.getValuesByType();
+            List<GraphTypeValuesDto> data = productService.getValuesByType();
             return ResponseEntity.ok(data);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.notFound().build();
@@ -111,6 +113,7 @@ public class ProductController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
 
     @GetMapping("/products-values")
     public ResponseEntity<Map<String, BigDecimal>> getProductsValues() {
