@@ -1,5 +1,8 @@
 package com.kaspperacademy.stockapi.controllers;
 
+import com.kaspperacademy.stockapi.dto.GraphSupplierAmountCategoriesDto;
+import com.kaspperacademy.stockapi.dto.GraphSupplierProductsAmountDto;
+import com.kaspperacademy.stockapi.dto.GraphSupplierStatesDto;
 import com.kaspperacademy.stockapi.dto.SupplierDto;
 import com.kaspperacademy.stockapi.models.Supplier;
 import com.kaspperacademy.stockapi.services.SupplierService;
@@ -42,6 +45,12 @@ public class SupplierController {
         }
     }
 
+    @GetMapping("/categories")
+    public ResponseEntity<List<String>> listCategories() {
+        List<String> categories = supplierService.getAllCategories();
+        return ResponseEntity.ok(categories);
+    }
+
     @PostMapping
     public ResponseEntity<?> save(@RequestBody SupplierDto dto) {
         try {
@@ -78,4 +87,21 @@ public class SupplierController {
         }
     }
 
+    @GetMapping("/amount-state")
+    public ResponseEntity<List<GraphSupplierStatesDto>> getSuppliersByState() {
+        List<GraphSupplierStatesDto> stateCountList = supplierService.getSuppliersByState();
+        return ResponseEntity.ok(stateCountList);
+    }
+
+    @GetMapping("/amount-category")
+    public ResponseEntity<List<GraphSupplierAmountCategoriesDto>> getAmountSuppliersByCategory() {
+        List<GraphSupplierAmountCategoriesDto> categoryAmountList = supplierService.getAmountSuppliersByCategory();
+        return ResponseEntity.ok(categoryAmountList);
+    }
+
+    @GetMapping("/amount-products")
+    public ResponseEntity<List<GraphSupplierProductsAmountDto>> getProductsAmountBySupplier() {
+        List<GraphSupplierProductsAmountDto> supplierProductAmountList = supplierService.getProductsBySupplier();
+        return ResponseEntity.ok(supplierProductAmountList);
+    }
 }

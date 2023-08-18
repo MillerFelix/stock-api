@@ -1,6 +1,7 @@
 package com.kaspperacademy.stockapi.controllers;
 
 
+import com.kaspperacademy.stockapi.dto.GraphProductValuesDto;
 import com.kaspperacademy.stockapi.dto.GraphTypeValuesDto;
 import com.kaspperacademy.stockapi.dto.ProductDto;
 import com.kaspperacademy.stockapi.dto.GraphTypeAmountDto;
@@ -16,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/products")
@@ -31,7 +31,6 @@ public class ProductController {
         return productService.listProducts();
     }
 
-    //  Se for chamar paginado precisa passar na url: /products?page=0&size=10
     @GetMapping("/products")
     public Page<Product> paginatedListProduct(Pageable pageable) {
         return productService.paginatedListProduct(pageable);
@@ -114,11 +113,10 @@ public class ProductController {
         }
     }
 
-
     @GetMapping("/products-values")
-    public ResponseEntity<Map<String, BigDecimal>> getProductsValues() {
+    public ResponseEntity<List<GraphProductValuesDto>> getProductsValues() {
         try {
-            Map<String, BigDecimal> data = productService.getValuesByProducts();
+            List<GraphProductValuesDto> data = productService.getValuesByProducts();
             return ResponseEntity.ok(data);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.notFound().build();
@@ -128,9 +126,9 @@ public class ProductController {
     }
 
     @GetMapping("/product-value/{id}")
-    public ResponseEntity<BigDecimal> getProductValue(@PathVariable Long id) {
+    public ResponseEntity<BigDecimal> findProductValue(@PathVariable Long id) {
         try {
-            BigDecimal value = productService.getValueByProduct(id);
+            BigDecimal value = productService.findValueByProduct(id);
             return ResponseEntity.ok(value);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.notFound().build();

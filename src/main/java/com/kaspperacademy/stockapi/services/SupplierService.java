@@ -1,5 +1,8 @@
 package com.kaspperacademy.stockapi.services;
 
+import com.kaspperacademy.stockapi.dto.GraphSupplierAmountCategoriesDto;
+import com.kaspperacademy.stockapi.dto.GraphSupplierProductsAmountDto;
+import com.kaspperacademy.stockapi.dto.GraphSupplierStatesDto;
 import com.kaspperacademy.stockapi.dto.SupplierDto;
 import com.kaspperacademy.stockapi.models.Supplier;
 import com.kaspperacademy.stockapi.repositories.SupplierRepository;
@@ -10,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,6 +33,10 @@ public class SupplierService {
     public Supplier getSupplier(Long id) {
         Optional<Supplier> supplier = supplierRepository.findById(id);
         return supplier.orElseThrow();
+    }
+
+    public List<String> getAllCategories() {
+        return supplierRepository.findCategories();
     }
 
     @Transactional
@@ -53,6 +61,48 @@ public class SupplierService {
             throw new IllegalArgumentException("Supplier not found for ID: " + id);
         }
         supplierRepository.deleteById(id);
+    }
+
+    public List<GraphSupplierStatesDto> getSuppliersByState() {
+        List<Object[]> stateCountList = supplierRepository.findSuppliersByState();
+        List<GraphSupplierStatesDto> graphSupplierStatesList = new ArrayList<>();
+
+        for (Object[] result : stateCountList) {
+            String state = (String) result[0];
+            Long amount = (Long) result[1];
+            GraphSupplierStatesDto dto = new GraphSupplierStatesDto(state, amount);
+            graphSupplierStatesList.add(dto);
+        }
+
+        return graphSupplierStatesList;
+    }
+
+    public List<GraphSupplierAmountCategoriesDto> getAmountSuppliersByCategory() {
+        List<Object[]> categoryAmountList = supplierRepository.findSuppliersByCategory();
+        List<GraphSupplierAmountCategoriesDto> graphSupplierCategoriesList = new ArrayList<>();
+
+        for (Object[] result : categoryAmountList) {
+            String category = (String) result[0];
+            Long amount = (Long) result[1];
+            GraphSupplierAmountCategoriesDto dto = new GraphSupplierAmountCategoriesDto(category, amount);
+            graphSupplierCategoriesList.add(dto);
+        }
+
+        return graphSupplierCategoriesList;
+    }
+
+    public List<GraphSupplierProductsAmountDto> getProductsBySupplier() {
+        List<Object[]> productAmountBySupplierList = supplierRepository.findProductsBySupplier();
+        List<GraphSupplierProductsAmountDto> graphSupplierProductAmountList = new ArrayList<>();
+
+        for (Object[] result : productAmountBySupplierList) {
+            String supplierName = (String) result[0];
+            Long productAmount = (Long) result[1];
+            GraphSupplierProductsAmountDto dto = new GraphSupplierProductsAmountDto(supplierName, productAmount);
+            graphSupplierProductAmountList.add(dto);
+        }
+
+        return graphSupplierProductAmountList;
     }
 
     private Supplier convertToSupplier(SupplierDto dto) {

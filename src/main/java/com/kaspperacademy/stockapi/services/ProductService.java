@@ -1,5 +1,6 @@
 package com.kaspperacademy.stockapi.services;
 
+import com.kaspperacademy.stockapi.dto.GraphProductValuesDto;
 import com.kaspperacademy.stockapi.dto.GraphTypeValuesDto;
 import com.kaspperacademy.stockapi.dto.ProductDto;
 import com.kaspperacademy.stockapi.dto.GraphTypeAmountDto;
@@ -78,6 +79,7 @@ public class ProductService {
             throw new IllegalArgumentException("No data found.");
         }
         List<GraphTypeAmountDto> amountByTypeList = new ArrayList<>();
+
         for (Object[] result : data) {
             String typeName = (String) result[0];
             Integer amount = ((Number) result[1]).intValue();
@@ -92,7 +94,6 @@ public class ProductService {
         if (data.isEmpty()) {
             throw new IllegalArgumentException("No data found.");
         }
-
         List<GraphTypeValuesDto> valueByTypeList = new ArrayList<>();
 
         for (Object[] result : data) {
@@ -101,26 +102,26 @@ public class ProductService {
             GraphTypeValuesDto dto = new GraphTypeValuesDto(typeName, value);
             valueByTypeList.add(dto);
         }
-
         return valueByTypeList;
     }
 
-    public Map<String, BigDecimal> getValuesByProducts() {
+    public List<GraphProductValuesDto> getValuesByProducts() {
         List<Object[]> data = productRepository.findValuesByProducts();
-        Map<String, BigDecimal> valuesByProduct = new HashMap<>();
         if (data.isEmpty()) {
             throw new IllegalArgumentException("No data found.");
         }
+        List<GraphProductValuesDto> valuesByProductList = new ArrayList<>();
 
         for (Object[] result : data) {
             String productName = (String) result[0];
             BigDecimal value = (BigDecimal) result[1];
-            valuesByProduct.put(productName, value);
+            GraphProductValuesDto dto = new GraphProductValuesDto(productName, value);
+            valuesByProductList.add(dto);
         }
-        return valuesByProduct;
+        return valuesByProductList;
     }
 
-    public BigDecimal getValueByProduct(Long id) {
+    public BigDecimal findValueByProduct(Long id) {
         return productRepository.findValueByProduct(id);
     }
 
