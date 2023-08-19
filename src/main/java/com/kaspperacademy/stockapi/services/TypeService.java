@@ -1,5 +1,7 @@
 package com.kaspperacademy.stockapi.services;
 
+import com.kaspperacademy.stockapi.dto.FilterTypeProductsDto;
+import com.kaspperacademy.stockapi.dto.ProductDto;
 import com.kaspperacademy.stockapi.dto.TypeDto;
 import com.kaspperacademy.stockapi.models.Product;
 import com.kaspperacademy.stockapi.models.Type;
@@ -12,8 +14,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class TypeService {
@@ -32,9 +34,26 @@ public class TypeService {
         return typeRepository.findAll(pageable);
     }
 
-    public Type getType(Long id) {
-        Optional<Type> type = typeRepository.findById(id);
-        return type.orElseThrow();
+    public FilterTypeProductsDto getTypesProducts(Long id) {
+        Type type = typeRepository.findById(id).orElseThrow(() -> new RuntimeException("Type not found for ID: " + id));
+        List<Product> products = typeRepository.findByType(type);
+        List<ProductDto> productDtos = new ArrayList<>();
+
+        for (Product product : products) {
+            ProductDto productDto = new ProductDto();
+            productDto.setName(product.getName());
+            productDto.setAmount(product.getAmount());
+            productDto.setValue(product.getValue());
+            productDto.setDescription(product.getDescription());
+            productDtos.add(productDto);
+        }
+
+        FilterTypeProductsDto typeDto = new FilterTypeProductsDto();
+        typeDto.setId(type.getId());
+        typeDto.setName(type.getName());
+        typeDto.setDescription(type.getDescription());
+        typeDto.setProducts(productDtos);
+        return typeDto;
     }
 
     @Transactional

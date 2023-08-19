@@ -1,10 +1,7 @@
 package com.kaspperacademy.stockapi.controllers;
 
 
-import com.kaspperacademy.stockapi.dto.GraphProductValuesDto;
-import com.kaspperacademy.stockapi.dto.GraphTypeValuesDto;
-import com.kaspperacademy.stockapi.dto.ProductDto;
-import com.kaspperacademy.stockapi.dto.GraphTypeAmountDto;
+import com.kaspperacademy.stockapi.dto.*;
 import com.kaspperacademy.stockapi.models.Product;
 import com.kaspperacademy.stockapi.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +24,9 @@ public class ProductController {
     private ProductService productService;
 
     @GetMapping
-    public List<Product> listProducts() {
-        return productService.listProducts();
+    public ResponseEntity<List<FilterProductsDto>> listProducts() {
+        List<FilterProductsDto> filterProducts = productService.listProducts();
+        return ResponseEntity.ok(filterProducts);
     }
 
     @GetMapping("/products")
@@ -48,8 +46,8 @@ public class ProductController {
     }
 
     @GetMapping("/type/{id}")
-    public ResponseEntity<?> getProductsByTypeId(@PathVariable Long id) {
-        List<Product> products = productService.getProductsByTypeId(id);
+    public ResponseEntity<?> getProductsByTypeId(@PathVariable Long id, Pageable pageable) {
+        Page<Product> products = productService.getProductsByTypeId(id, pageable);
         return ResponseEntity.ok().body(products);
     }
 

@@ -16,6 +16,7 @@ public class TypeDto {
     public String getName() {
         return name;
     }
+
     public String getDescription() {
         return description;
     }

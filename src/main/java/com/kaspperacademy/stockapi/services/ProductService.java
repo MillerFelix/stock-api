@@ -1,9 +1,6 @@
 package com.kaspperacademy.stockapi.services;
 
-import com.kaspperacademy.stockapi.dto.GraphProductValuesDto;
-import com.kaspperacademy.stockapi.dto.GraphTypeValuesDto;
-import com.kaspperacademy.stockapi.dto.ProductDto;
-import com.kaspperacademy.stockapi.dto.GraphTypeAmountDto;
+import com.kaspperacademy.stockapi.dto.*;
 import com.kaspperacademy.stockapi.models.Product;
 import com.kaspperacademy.stockapi.repositories.ProductRepository;
 import com.kaspperacademy.stockapi.repositories.TypeRepository;
@@ -25,8 +22,20 @@ public class ProductService {
     @Autowired
     private TypeRepository typeRepository;
 
-    public List<Product> listProducts() {
-        return productRepository.findAll();
+    public List<FilterProductsDto> listProducts() {
+        List<Product> products = productRepository.findAll();
+        List<FilterProductsDto> filterProducts = new ArrayList<>();
+
+        for (Product product : products) {
+            FilterProductsDto dto = new FilterProductsDto();
+            dto.setId(product.getId());
+            dto.setName(product.getName());
+            dto.setValue(product.getValue());
+            dto.setAmount(product.getAmount());
+            filterProducts.add(dto);
+        }
+
+        return filterProducts;
     }
 
     public Page<Product> paginatedListProduct(Pageable pageable) {
@@ -38,11 +47,11 @@ public class ProductService {
         return product.orElseThrow();
     }
 
-    public List<Product> getProductsByTypeId(Long typeId) {
+    public Page<Product> getProductsByTypeId(Long typeId, Pageable pageable) {
         if (!typeRepository.existsById(typeId)) {
             throw new IllegalArgumentException("Type not found for ID: " + typeId);
         }
-        List<Product> products = productRepository.findByTypeId(typeId);
+        Page<Product> products = productRepository.findByTypeId(typeId, pageable);
         if (products.isEmpty()) {
             throw new IllegalArgumentException("No products were found for the type with the ID: " + typeId);
         }

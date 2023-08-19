@@ -1,5 +1,6 @@
 package com.kaspperacademy.stockapi.controllers;
 
+import com.kaspperacademy.stockapi.dto.FilterTypeProductsDto;
 import com.kaspperacademy.stockapi.dto.TypeDto;
 import com.kaspperacademy.stockapi.models.Product;
 import com.kaspperacademy.stockapi.models.Type;
@@ -35,8 +36,8 @@ public class TypeController {
     @GetMapping("/{id}")
     public ResponseEntity<?> getType(@PathVariable Long id) {
         try {
-            Type type = typeService.getType(id);
-            return ResponseEntity.ok().body(type);
+            FilterTypeProductsDto typesProducts = typeService.getTypesProducts(id);
+            return ResponseEntity.ok().body(typesProducts);
         } catch (RuntimeException e) {
             String errorMessage = "Type not found for ID: " + id;
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorMessage);

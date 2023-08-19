@@ -1,9 +1,6 @@
 package com.kaspperacademy.stockapi.services;
 
-import com.kaspperacademy.stockapi.dto.GraphSupplierAmountCategoriesDto;
-import com.kaspperacademy.stockapi.dto.GraphSupplierProductsAmountDto;
-import com.kaspperacademy.stockapi.dto.GraphSupplierStatesDto;
-import com.kaspperacademy.stockapi.dto.SupplierDto;
+import com.kaspperacademy.stockapi.dto.*;
 import com.kaspperacademy.stockapi.models.Supplier;
 import com.kaspperacademy.stockapi.repositories.SupplierRepository;
 import jakarta.transaction.Transactional;
@@ -35,8 +32,10 @@ public class SupplierService {
         return supplier.orElseThrow();
     }
 
-    public List<String> getAllCategories() {
-        return supplierRepository.findCategories();
+    public FilterCategoriesSuppliersDto getCategoryBySupplier(Long supplierId) {
+        Supplier supplier = supplierRepository.findById(supplierId)
+                .orElseThrow(() -> new RuntimeException("Supplier not found for ID: " + supplierId));
+        return new FilterCategoriesSuppliersDto(supplier.getCategory());
     }
 
     @Transactional

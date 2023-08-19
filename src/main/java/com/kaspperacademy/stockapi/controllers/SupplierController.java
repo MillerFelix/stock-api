@@ -1,9 +1,6 @@
 package com.kaspperacademy.stockapi.controllers;
 
-import com.kaspperacademy.stockapi.dto.GraphSupplierAmountCategoriesDto;
-import com.kaspperacademy.stockapi.dto.GraphSupplierProductsAmountDto;
-import com.kaspperacademy.stockapi.dto.GraphSupplierStatesDto;
-import com.kaspperacademy.stockapi.dto.SupplierDto;
+import com.kaspperacademy.stockapi.dto.*;
 import com.kaspperacademy.stockapi.models.Supplier;
 import com.kaspperacademy.stockapi.services.SupplierService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,10 +42,15 @@ public class SupplierController {
         }
     }
 
-    @GetMapping("/categories")
-    public ResponseEntity<List<String>> listCategories() {
-        List<String> categories = supplierService.getAllCategories();
-        return ResponseEntity.ok(categories);
+    @GetMapping("/category/{id}")
+    public ResponseEntity<FilterCategoriesSuppliersDto> getCategoryBySupplier(@PathVariable Long id) {
+        try {
+            FilterCategoriesSuppliersDto categoryDto = supplierService.getCategoryBySupplier(id);
+            return ResponseEntity.ok(categoryDto);
+        } catch (RuntimeException e) {
+            String errorMessage = "Supplier not found for ID: " + id;
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new FilterCategoriesSuppliersDto(errorMessage));
+        }
     }
 
     @PostMapping
