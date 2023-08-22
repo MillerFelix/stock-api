@@ -32,10 +32,19 @@ public class SupplierService {
         return supplier.orElseThrow();
     }
 
-    public FilterCategoriesSuppliersDto getCategoryBySupplier(Long supplierId) {
-        Supplier supplier = supplierRepository.findById(supplierId)
-                .orElseThrow(() -> new RuntimeException("Supplier not found for ID: " + supplierId));
-        return new FilterCategoriesSuppliersDto(supplier.getCategory());
+    public List<FilterCategoriesSuppliersDto> getAllCategories() {
+        List<String> categoryStrings = supplierRepository.findAllCategories();
+        List<FilterCategoriesSuppliersDto> categories = new ArrayList<>();
+
+        for (String category : categoryStrings) {
+            categories.add(new FilterCategoriesSuppliersDto(category));
+        }
+
+        return categories;
+    }
+
+    public Page<Supplier> getSuppliersByCategory(String category, Pageable pageable) {
+        return supplierRepository.findByCategory(category, pageable);
     }
 
     @Transactional
