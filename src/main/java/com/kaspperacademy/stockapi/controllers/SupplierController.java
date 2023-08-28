@@ -27,8 +27,8 @@ public class SupplierController {
     }
 
     @GetMapping("/suppliers")
-    public Page<Supplier> paginatedListSupplier(Pageable pageable) {
-        return supplierService.paginatedListSupplier(pageable);
+    public List<Supplier> paginatedListSupplier() {
+        return supplierService.paginatedListSupplier();
     }
 
     @GetMapping("/supplier/{id}")
@@ -48,9 +48,15 @@ public class SupplierController {
         return ResponseEntity.ok(categories);
     }
 
-    @GetMapping("/{category}")
-    public ResponseEntity<Page<Supplier>> getSuppliersByCategory(@PathVariable String category, Pageable pageable) {
-        Page<Supplier> suppliers = supplierService.getSuppliersByCategory(category, pageable);
+//    @GetMapping("/{category}")
+//    public ResponseEntity<Page<Supplier>> getSuppliersByCategory(@PathVariable String category, Pageable pageable) {
+//        Page<Supplier> suppliers = supplierService.getSuppliersByCategory(category, pageable);
+//        return ResponseEntity.ok(suppliers);
+//    }
+
+        @GetMapping("/{category}")
+    public ResponseEntity<List<Supplier>> getSuppliersByCategory(@PathVariable String category) {
+        List<Supplier> suppliers = supplierService.getSuppliersByCategory(category);
         return ResponseEntity.ok(suppliers);
     }
 

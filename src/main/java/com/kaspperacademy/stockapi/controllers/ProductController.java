@@ -30,8 +30,8 @@ public class ProductController {
     }
 
     @GetMapping("/products")
-    public Page<Product> paginatedListProduct(Pageable pageable) {
-        return productService.paginatedListProduct(pageable);
+    public List<Product> paginatedListProduct() {
+        return productService.paginatedListProduct();
     }
 
     @GetMapping("/{id}")

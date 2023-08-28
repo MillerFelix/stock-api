@@ -29,8 +29,8 @@ public class TypeController {
     }
 
     @GetMapping("/types")
-    public Page<Type> paginatedListType(Pageable pageable) {
-        return typeService.paginatedListType(pageable);
+    public List<Type> paginatedListType() {
+        return typeService.paginatedListType();
     }
 
     @GetMapping("/{id}")

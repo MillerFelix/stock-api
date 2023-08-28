@@ -38,8 +38,8 @@ public class ProductService {
         return filterProducts;
     }
 
-    public Page<Product> paginatedListProduct(Pageable pageable) {
-        return productRepository.findAll(pageable);
+    public List<Product> paginatedListProduct() {
+        return productRepository.findAll();
     }
 
     public Product getProduct(Long id) {

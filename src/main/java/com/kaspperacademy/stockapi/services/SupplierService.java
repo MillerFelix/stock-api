@@ -23,8 +23,8 @@ public class SupplierService {
         return supplierRepository.findAll();
     }
 
-    public Page<Supplier> paginatedListSupplier(Pageable pageable) {
-        return supplierRepository.findAll(pageable);
+    public List<Supplier> paginatedListSupplier() {
+        return supplierRepository.findAll();
     }
 
     public Supplier getSupplier(Long id) {
@@ -43,8 +43,12 @@ public class SupplierService {
         return categories;
     }
 
-    public Page<Supplier> getSuppliersByCategory(String category, Pageable pageable) {
-        return supplierRepository.findByCategory(category, pageable);
+//    public Page<Supplier> getSuppliersByCategory(String category, Pageable pageable) {
+//        return supplierRepository.findByCategory(category, pageable);
+//    }
+
+    public List<Supplier> getSuppliersByCategory(String category) {
+        return supplierRepository.findByCategory(category);
     }
 
     @Transactional

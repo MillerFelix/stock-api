@@ -30,8 +30,8 @@ public class TypeService {
         return typeRepository.findAll();
     }
 
-    public Page<Type> paginatedListType(Pageable pageable) {
-        return typeRepository.findAll(pageable);
+    public List<Type> paginatedListType() {
+        return typeRepository.findAll();
     }
 
     public FilterTypeProductsDto getTypesProducts(Long id) {

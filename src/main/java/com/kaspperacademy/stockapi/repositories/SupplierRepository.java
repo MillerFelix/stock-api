@@ -15,7 +15,7 @@ public interface SupplierRepository extends JpaRepository<Supplier, Long> {
     List<String> findAllCategories();
 
     @Query("SELECT s FROM Supplier s WHERE (:category IS NULL OR s.category = :category)")
-    Page<Supplier> findByCategory(String category, Pageable pageable);
+    List<Supplier> findByCategory(String category);
 
     @Query("SELECT s.state, COUNT(s) FROM Supplier s GROUP BY s.state")
     List<Object[]> findSuppliersByState();
