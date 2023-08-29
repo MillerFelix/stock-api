@@ -34,8 +34,8 @@ public class SupplierController {
     @GetMapping("/supplier/{id}")
     public ResponseEntity<?> getSupplier(@PathVariable Long id) {
         try {
-            Supplier supplier = supplierService.getSupplier(id);
-            return ResponseEntity.ok().body(supplier);
+            List<Supplier> suppliers = supplierService.getSupplier(id);
+            return ResponseEntity.ok().body(suppliers);
         } catch (RuntimeException e) {
             String errorMessage = "Supplier not found for ID: " + id;
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorMessage);
@@ -47,12 +47,6 @@ public class SupplierController {
         List<FilterCategoriesSuppliersDto> categories = supplierService.getAllCategories();
         return ResponseEntity.ok(categories);
     }
-
-//    @GetMapping("/{category}")
-//    public ResponseEntity<Page<Supplier>> getSuppliersByCategory(@PathVariable String category, Pageable pageable) {
-//        Page<Supplier> suppliers = supplierService.getSuppliersByCategory(category, pageable);
-//        return ResponseEntity.ok(suppliers);
-//    }
 
         @GetMapping("/{category}")
     public ResponseEntity<List<Supplier>> getSuppliersByCategory(@PathVariable String category) {

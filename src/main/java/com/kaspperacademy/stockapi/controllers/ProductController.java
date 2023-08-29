@@ -37,8 +37,8 @@ public class ProductController {
     @GetMapping("/{id}")
     public ResponseEntity<?> getProduct(@PathVariable Long id) {
         try {
-            Product product = productService.getProduct(id);
-            return ResponseEntity.ok().body(product);
+            List<Product> products = productService.getProduct(id);
+            return ResponseEntity.ok().body(products);
         } catch (RuntimeException e) {
             String errorMessage = "Product not found for ID: " + id;
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorMessage);
@@ -46,8 +46,8 @@ public class ProductController {
     }
 
     @GetMapping("/type/{id}")
-    public ResponseEntity<?> getProductsByTypeId(@PathVariable Long id, Pageable pageable) {
-        Page<Product> products = productService.getProductsByTypeId(id, pageable);
+    public ResponseEntity<?> getProductsByTypeId(@PathVariable Long id) {
+        List<Product> products = productService.getProductsByTypeId(id);
         return ResponseEntity.ok().body(products);
     }
 

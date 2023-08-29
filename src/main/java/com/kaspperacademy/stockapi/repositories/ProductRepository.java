@@ -14,7 +14,7 @@ import java.util.List;
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
     @Query("SELECT p FROM Product p WHERE p.type.id = :typeId")
-    Page<Product> findByTypeId(Long typeId, Pageable pageable);
+    List<Product> findByTypeId(Long typeId);
 
     @Query("SELECT p.type.name, SUM(p.amount) FROM Product p GROUP BY p.type.id")
     List<Object[]> findAmountByType();

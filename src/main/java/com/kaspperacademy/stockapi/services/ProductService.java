@@ -42,16 +42,20 @@ public class ProductService {
         return productRepository.findAll();
     }
 
-    public Product getProduct(Long id) {
+    public List<Product> getProduct(Long id) {
         Optional<Product> product = productRepository.findById(id);
-        return product.orElseThrow();
+        if (product.isPresent()) {
+            return Collections.singletonList(product.get());
+        } else {
+            throw new RuntimeException("Product not found for ID: " + id);
+        }
     }
 
-    public Page<Product> getProductsByTypeId(Long typeId, Pageable pageable) {
+    public List<Product> getProductsByTypeId(Long typeId) {
         if (!typeRepository.existsById(typeId)) {
             throw new IllegalArgumentException("Type not found for ID: " + typeId);
         }
-        Page<Product> products = productRepository.findByTypeId(typeId, pageable);
+        List<Product> products = productRepository.findByTypeId(typeId);
         if (products.isEmpty()) {
             throw new IllegalArgumentException("No products were found for the type with the ID: " + typeId);
         }

@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,9 +28,14 @@ public class SupplierService {
         return supplierRepository.findAll();
     }
 
-    public Supplier getSupplier(Long id) {
+    public List<Supplier> getSupplier(Long id) {
         Optional<Supplier> supplier = supplierRepository.findById(id);
-        return supplier.orElseThrow();
+
+        if (supplier.isPresent()) {
+            return Collections.singletonList(supplier.get());
+        } else {
+            throw new RuntimeException("Supplier not found for ID: " + id);
+        }
     }
 
     public List<FilterCategoriesSuppliersDto> getAllCategories() {
@@ -42,10 +48,6 @@ public class SupplierService {
 
         return categories;
     }
-
-//    public Page<Supplier> getSuppliersByCategory(String category, Pageable pageable) {
-//        return supplierRepository.findByCategory(category, pageable);
-//    }
 
     public List<Supplier> getSuppliersByCategory(String category) {
         return supplierRepository.findByCategory(category);

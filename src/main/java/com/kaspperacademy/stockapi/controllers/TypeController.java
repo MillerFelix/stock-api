@@ -36,7 +36,7 @@ public class TypeController {
     @GetMapping("/{id}")
     public ResponseEntity<?> getType(@PathVariable Long id) {
         try {
-            FilterTypeProductsDto typesProducts = typeService.getTypesProducts(id);
+            List<FilterTypeProductsDto> typesProducts = typeService.getTypesProducts(id);
             return ResponseEntity.ok().body(typesProducts);
         } catch (RuntimeException e) {
             String errorMessage = "Type not found for ID: " + id;

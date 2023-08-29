@@ -34,27 +34,32 @@ public class TypeService {
         return typeRepository.findAll();
     }
 
-    public FilterTypeProductsDto getTypesProducts(Long id) {
+    public List<FilterTypeProductsDto> getTypesProducts(Long id) {
         Type type = typeRepository.findById(id).orElseThrow(() -> new RuntimeException("Type not found for ID: " + id));
         List<Product> products = typeRepository.findByType(type);
-        List<ProductDto> productDtos = new ArrayList<>();
+
+        List<FilterTypeProductsDto> typeDtos = new ArrayList<>();
 
         for (Product product : products) {
+            FilterTypeProductsDto typeDto = new FilterTypeProductsDto();
+            typeDto.setId(type.getId());
+            typeDto.setName(type.getName());
+            typeDto.setDescription(type.getDescription());
+
+            List<ProductDto> productDtos = new ArrayList<>();
             ProductDto productDto = new ProductDto();
             productDto.setName(product.getName());
             productDto.setAmount(product.getAmount());
             productDto.setValue(product.getValue());
             productDto.setDescription(product.getDescription());
             productDtos.add(productDto);
-        }
 
-        FilterTypeProductsDto typeDto = new FilterTypeProductsDto();
-        typeDto.setId(type.getId());
-        typeDto.setName(type.getName());
-        typeDto.setDescription(type.getDescription());
-        typeDto.setProducts(productDtos);
-        return typeDto;
+            typeDto.setProducts(productDtos);
+            typeDtos.add(typeDto);
+        }
+        return typeDtos;
     }
+
 
     @Transactional
     public Type save(TypeDto dto) {
