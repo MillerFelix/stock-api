@@ -13,7 +13,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+
+import static org.springframework.http.RequestEntity.post;
 
 @RestController
 @RequestMapping("/types")
@@ -48,7 +51,9 @@ public class TypeController {
     public ResponseEntity<?> save(@RequestBody TypeDto dto) {
         try {
             Type type = typeService.save(dto);
-            return ResponseEntity.ok().body("Type saved successfully!");
+            return ResponseEntity.ok(new HashMap<String, String>() {{
+                post("message", "Type saved successfully!");
+            }});
         } catch (IllegalArgumentException | IllegalStateException e) {
             return ResponseEntity.badRequest().body("Error saving product: " + e.getMessage());
         } catch (Exception e) {
@@ -57,10 +62,12 @@ public class TypeController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<String> update(@PathVariable Long id, @RequestBody TypeDto dto) {
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody TypeDto dto) {
         try {
             typeService.update(id, dto);
-            return ResponseEntity.ok("Type updated successfully!");
+            return ResponseEntity.ok(new HashMap<String, String>() {{
+                put("message", "Type updated successfully!");
+            }});
         } catch (IllegalArgumentException | IllegalStateException e) {
             return ResponseEntity.badRequest().body("Error when updating the type: " + e.getMessage());
         } catch (RuntimeException e) {

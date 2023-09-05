@@ -11,7 +11,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+
+import static org.springframework.http.RequestEntity.post;
 
 @RestController
 @RequestMapping("/suppliers")
@@ -58,7 +61,9 @@ public class SupplierController {
     public ResponseEntity<?> save(@RequestBody SupplierDto dto) {
         try {
             Supplier supplier = supplierService.save(dto);
-            return ResponseEntity.ok().body("Supplier saved successfully!");
+            return ResponseEntity.ok(new HashMap<String, String>() {{
+                post("message", "Supplier saved successfully!");
+            }});
         } catch (IllegalArgumentException | IllegalStateException e) {
             return ResponseEntity.badRequest().body("Error saving supplier: " + e.getMessage());
         } catch (Exception e) {
@@ -67,10 +72,12 @@ public class SupplierController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<String> update(@PathVariable Long id, @RequestBody SupplierDto dto) {
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody SupplierDto dto) {
         try {
             supplierService.update(id, dto);
-            return ResponseEntity.ok("Supplier updated successfully!");
+            return ResponseEntity.ok(new HashMap<String, String>() {{
+                put("message", "Supplier updated successfully!");
+            }});
         } catch (IllegalArgumentException | IllegalStateException e) {
             return ResponseEntity.badRequest().body("Error when updating the supplier: " + e.getMessage());
         } catch (RuntimeException e) {

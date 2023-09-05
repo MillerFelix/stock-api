@@ -16,6 +16,8 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 
+import static org.springframework.http.RequestEntity.post;
+
 @RestController
 @RequestMapping("/products")
 @Validated
@@ -56,7 +58,9 @@ public class ProductController {
     public ResponseEntity<?> save(@RequestBody ProductDto dto) {
         try {
             Product product = productService.save(dto);
-            return ResponseEntity.ok().body("Product saved successfully!");
+            return ResponseEntity.ok(new HashMap<String, String>() {{
+                post("message", "Product saved successfully!");
+            }});
         } catch (IllegalArgumentException | IllegalStateException e) {
             return ResponseEntity.badRequest().body("Error saving product: " + e.getMessage());
         } catch (Exception e) {
