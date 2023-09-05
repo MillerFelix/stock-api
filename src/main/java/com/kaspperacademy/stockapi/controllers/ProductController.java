@@ -13,6 +13,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -64,10 +65,12 @@ public class ProductController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<String> update(@PathVariable Long id, @RequestBody ProductDto dto) {
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody ProductDto dto) {
         try {
             productService.update(id, dto);
-            return ResponseEntity.ok("Product updated successfully!");
+            return ResponseEntity.ok(new HashMap<String, String>() {{
+                put("message", "Product updated successfully!");
+            }});
         } catch (IllegalArgumentException | IllegalStateException e) {
             return ResponseEntity.badRequest().body("Error when updating the product: " + e.getMessage());
         } catch (RuntimeException e) {
