@@ -19,7 +19,7 @@ public class Product {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(nullable = false ,name = "type_id")
+    @JoinColumn(nullable = false, name = "type_id")
     private Type type;
 
     @ManyToOne
@@ -31,7 +31,6 @@ public class Product {
 
     @Column(nullable = false)
     private BigDecimal value;
-
 
     @Column(nullable = false)
     private Integer amount;

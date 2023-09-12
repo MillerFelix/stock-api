@@ -51,7 +51,7 @@ public class SupplierController {
         return ResponseEntity.ok(categories);
     }
 
-        @GetMapping("/{category}")
+    @GetMapping("/{category}")
     public ResponseEntity<List<Supplier>> getSuppliersByCategory(@PathVariable String category) {
         List<Supplier> suppliers = supplierService.getSuppliersByCategory(category);
         return ResponseEntity.ok(suppliers);

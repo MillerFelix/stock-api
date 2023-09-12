@@ -2,12 +2,9 @@ package com.kaspperacademy.stockapi.controllers;
 
 import com.kaspperacademy.stockapi.dto.FilterTypeProductsDto;
 import com.kaspperacademy.stockapi.dto.TypeDto;
-import com.kaspperacademy.stockapi.models.Product;
 import com.kaspperacademy.stockapi.models.Type;
 import com.kaspperacademy.stockapi.services.TypeService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
